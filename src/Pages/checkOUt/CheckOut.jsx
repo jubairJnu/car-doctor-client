@@ -5,9 +5,9 @@ import { AuthContext } from "../../provider/AuthProvider";
 
 const CheckOut = () => {
   const loggedservices = useLoaderData();
-  const {title, _id, price} = loggedservices;
+  const { title, _id, price, img } = loggedservices;
 
-  const {user} = useContext(AuthContext);
+  const { user } = useContext(AuthContext);
 
   const handleOrder = event => {
     event.preventDefault();
@@ -16,13 +16,30 @@ const CheckOut = () => {
     const email = user?.email;
     const date = form.date.value;
     const price = form.price.value;
-    const order ={
-      customer : name,
+    const order = {
+      customer: name,
       email,
       date,
-    price
+      services_id: _id,
+      services_name: title,
+      img,
+      price
     }
     console.log(order);
+    fetch('http://localhost:5000/bookings', {
+      method: 'POST',
+      headers: {
+        'content-type': 'application/json'
+      },
+      body: JSON.stringify(order)
+    })
+      .then(res => res.json())
+      .then(data => {
+        console.log(data);
+        if(data.insertedId){
+          alert('oredered successfully')
+        }
+      })
   }
 
   return (
@@ -53,7 +70,7 @@ const CheckOut = () => {
             <div className="form-control">
               <label className="input-group input-group-sm">
 
-                <input type="text" placeholder="Due Amount" defaultValue={'$'+price} name="price" className="w-full input input-bordered input-sm" />
+                <input type="text" placeholder="Due Amount" defaultValue={'$' + price} name="price" className="w-full input input-bordered input-sm" />
               </label>
             </div>
 
