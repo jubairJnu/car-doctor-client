@@ -13,6 +13,25 @@ const Bookings = () => {
     .then(res => res.json())
     .then(data => setBook(data))
   },[])
+
+  const hadleDelete = id =>{
+    const proceed = confirm('Are you sure to want delete');
+    if(proceed){
+      fetch(`http://localhost:5000/bookings/${id}`,{
+        method:'DELETE'
+      })
+      .then(res =>res.json())
+      .then(data =>{
+        console.log(data)
+        if(data.deletedCount>0){
+          alert('deleted successfully');
+          const remaining = book.filter(bk=> bk._id !==id)
+          setBook(remaining);
+        }
+      })
+    }
+  }
+
   return (
     <div>
       <img className="mx-auto" src={img} alt="" />
@@ -40,7 +59,9 @@ const Bookings = () => {
       {
         book.map(booking => <Bookingsrow
        key={booking._id}
-       booking={booking}></Bookingsrow>)
+       booking={booking}
+       hadleDelete={hadleDelete}
+       ></Bookingsrow>)
       }
      
      

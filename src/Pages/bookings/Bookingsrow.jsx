@@ -1,13 +1,16 @@
 
 
-const Bookingsrow = ({ booking }) => {
-  const { customer, email, services_name, img, date } = booking;
+const Bookingsrow = ({ booking,hadleDelete }) => {
+  const { _id, email, services_name, img, date } = booking;
+
+
+
   return (
     <tr>
       <th>
-        <label>
-          <input type="checkbox" className="checkbox" />
-        </label>
+      <button onClick={()=>hadleDelete(_id)} className="btn btn-circle btn-outline btn-sm">
+  <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M6 18L18 6M6 6l12 12" /></svg>
+</button>
       </th>
       <td>
         <div className="flex items-center space-x-3">
