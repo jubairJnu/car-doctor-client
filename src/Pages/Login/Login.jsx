@@ -1,11 +1,14 @@
-import { Link } from 'react-router-dom';
+import { Link, useLocation, useNavigate } from 'react-router-dom';
 import img from '../../assets/images/login/login.svg';
 import { useContext } from 'react';
 import { AuthContext } from '../../provider/AuthProvider';
+import SocailLogin from '../SocailLogin/SocailLogin';
 
 const Login = () => {
-
-  const {login} = useContext(AuthContext);
+  const location = useLocation();
+  const navigate = useNavigate();
+  const from = location.state?.from?.pathname || "/";
+  const { login } = useContext(AuthContext);
 
   const handleLogin = event => {
     event.preventDefault();
@@ -13,14 +16,17 @@ const Login = () => {
     const email = form.email.value;
     const password = form.password.value;
     // console.log(email, password);
-    login (email, password)
-    .then(resutl=>{
-      const loggedUser = resutl.user;
+    login(email, password)
+      .then(resutl => {
+        const loggedUser = resutl.user;
+      console.log(loggedUser);
+              navigate(from, { replace: true })
 
-    })
-    .catch(error =>{
-      console.log(error);
-    })
+       
+      })
+      .catch(error => {
+        console.log(error);
+      })
 
   }
   return (
@@ -53,7 +59,8 @@ const Login = () => {
                 <button className="btn btn-primary">Login</button>
               </div>
             </form>
-              <p>New to car doctor?<Link to="/signup" className='text-orange-600'>Sign Up</Link> </p>
+            <p>New to car doctor?<Link to="/signup" className='text-orange-600'>Sign Up</Link> </p>
+            <SocailLogin></SocailLogin>
           </div>
         </div>
       </div>
